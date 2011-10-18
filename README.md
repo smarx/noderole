@@ -10,7 +10,9 @@ To use it, do the following:
 2. Push that code to a public git repository or to a container within Windows Azure blob storage.
 3. Build NodeRole (by running `build` from the command line).
 4. Configure the application (by editing `*.cscfg`) with either a GitUrl (full URL to your git repository) or the pair of DataConnectionString and ContainerName. You *can* specify both a git URL and a blob container, and both will be sync'd to the same directory.
-5. Run the app locally with the Windows Azure compute emulator (but make sure that you've modified `ServiceConfiguration.Local.cscfg`, which is used when running locally).
-6. Deploy the app to Windows Azure, making sure to use `ServiceConfiguration.Cloud.cscfg` with appropriate settings in it.
+5. Run the app locally with the Windows Azure compute emulator with `run` from the command line, making sure that you've modified `ServiceConfiguration.Local.cscfg`, which is used when running locally.
+6. Deploy the app to Windows Azure, using `NodeRole.cspkg` and `ServiceConfiguration.Cloud.cscfg` from `noderole\bin\release\app.publish`, with appropriate settings in the `.cscfg` file.
+
+As an alternative to downloading and building yourself, you can click on "downloads" above and download a pre-built package and deploy that. (You can still modify `*.cscfg` to use your own app code.)
 
 For example apps, take a look at [twoenglishes](https://github.com/smarx/twoenglishes) and [smarxchat](https://github.com/smarx/smarxchat), both of which are running in Windows Azure using this package.
