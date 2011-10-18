@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="NodeRole" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+  <WebRole name="WebRole" vmsize="ExtraSmall">
+    <Runtime executionContext="elevated" />
+    <Startup>
+      <Task commandLine="startup\startup.cmd" executionContext="elevated">
+        <Environment>
+          <Variable name="EMULATED">
+            <RoleInstanceValue xpath="/RoleEnvironment/Deployment/@emulated" />
+          </Variable>
+          <Variable name="GITPATH">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/LocalResources/LocalResource[@name='Git']/@path" />
+          </Variable>
+          <Variable name="APPPATH">
+            <RoleInstanceValue xpath="/RoleEnvironment/CurrentInstance/LocalResources/LocalResource[@name='App']/@path" />
+          </Variable>
+        </Environment>
+      </Task>
+    </Startup>
+    <Sites>
+      <Site name="Web">
+        <Bindings>
+          <Binding name="Endpoint1" endpointName="Endpoint1" />
+        </Bindings>
+      </Site>
+    </Sites>
+    <Endpoints>
+      <InputEndpoint name="Endpoint1" protocol="http" port="80" />
+    </Endpoints>
+    <Imports>
+    </Imports>
+    <ConfigurationSettings>
+      <Setting name="DataConnectionString" />
+      <Setting name="PollingIntervalInSeconds" />
+      <Setting name="GitUrl" />
+      <Setting name="ContainerName" />
+    </ConfigurationSettings>
+    <LocalResources>
+      <LocalStorage name="App" cleanOnRoleRecycle="true" sizeInMB="1000" />
+      <LocalStorage name="Git" cleanOnRoleRecycle="true" sizeInMB="1000" />
+    </LocalResources>
+  </WebRole>
+</ServiceDefinition>
