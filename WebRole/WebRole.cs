@@ -88,7 +88,15 @@ namespace WebRole
             var appPath = RoleEnvironment.GetLocalResource("app").RootPath;
             var old = Environment.CurrentDirectory;
             Environment.CurrentDirectory = appPath;
-            new NjiApi().InstallAsync((IEnumerable<string>)null, new CancellationTokenSource().Token).Wait();
+            for (int i = 0; i < 10; i++) // Try 10 times. I suspect timing bugs in this dev branch of nji.
+            {
+                try
+                {
+                    new NjiApi().InstallAsync((IEnumerable<string>)null, new CancellationTokenSource().Token).Wait();
+                    break;
+                }
+                catch { }
+            }
             Environment.CurrentDirectory = old;
 
             try
