@@ -9,7 +9,7 @@ using smarx.BlobSync;
 using System.Threading;
 using Microsoft.Web.Administration;
 using System.IO;
-using nji;
+using System.Diagnostics;
 
 namespace WebRole
 {
@@ -86,19 +86,18 @@ namespace WebRole
         void syncCompleted(object sender)
         {
             var appPath = RoleEnvironment.GetLocalResource("app").RootPath;
-            var old = Environment.CurrentDirectory;
-            Environment.CurrentDirectory = appPath;
-            for (int i = 0; i < 10; i++) // Try 10 times. I suspect timing bugs in this dev branch of nji.
+            var proc = new Process()
             {
-                try
+                StartInfo = new ProcessStartInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), @"nodejs\npm.cmd"), "install")
                 {
-                    new NjiApi().InstallAsync((IEnumerable<string>)null, new CancellationTokenSource().Token).Wait();
-                    break;
+                    WorkingDirectory = appPath,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
                 }
-                catch { }
-            }
-            Environment.CurrentDirectory = old;
-
+            };
+            proc.Start();
+            proc.WaitForExit((int)TimeSpan.FromMinutes(2).TotalMilliseconds);
+ 
             try
             {
                 File.Copy(Environment.ExpandEnvironmentVariables(@"%RoleRoot%\approot\bin\node.Web.config"), Path.Combine(appPath, @"Web.config"));

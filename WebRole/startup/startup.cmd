@@ -6,8 +6,8 @@ powershell .\downloadstuff.ps1
 
 REM Install IIS node
 start /w vcredist_x64.exe /q
-start /w msiexec /l* nodelog.txt /qn /i node-v0.5.10-x86.msi
-start /w msiexec /l* iislog.txt /qn /i iisnode-iis7-v0.1.8-x64.msi
+start /w msiexec /l* nodelog.txt /qn /i node-v0.6.6.msi
+start /w msiexec /l* iislog.txt /qn /i iisnode-full-iis7-v0.1.12-x64.msi
 
 REM Get rid of IIS idle timeout
 %windir%\system32\inetsrv\appcmd set config -section:applicationPools -applicationPoolDefaults.processModel.idleTimeout:00:00:00
